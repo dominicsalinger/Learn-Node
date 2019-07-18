@@ -25,7 +25,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 app.use(expressValidator());
@@ -41,7 +43,9 @@ app.use(
         key: process.env.KEY,
         resave: false,
         saveUninitialized: false,
-        store: new MongoStore({ mongooseConnection: mongoose.connection })
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection
+        })
     })
 );
 

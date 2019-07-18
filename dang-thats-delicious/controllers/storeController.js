@@ -8,7 +8,9 @@ const multerOptions = {
         if (isPhoto) {
             next(null, true);
         } else {
-            next({_message: `That filetype isn't allowed!`}, false);
+            next({
+                _message: `That filetype isn't allowed!`
+            }, false);
         }
     }
 };
@@ -34,14 +36,14 @@ exports.resize = async (req, res, next) => {
     }
     const extension = req.file.mimetype.split('/')[1];
     req.body.photo = `${uuid.v4()}.${extension}`;
-    
+
     // Resize the image
     const photo = await jimp.read(req.file.buffer);
     await photo.resize(800, jimp.AUTO);
     await photo.write(`./public/uploads/${req.body.photo}`);
- 
+
     next();
-}; 
+};
 
 
 // POST request to create stores
@@ -88,4 +90,27 @@ exports.updateStore = async (req, res) => {
 
     req.flash('success', `Successfully updated <strong>${store.name}</strong>. <a href="/stores/${store.slug}">View Store</a>`);
     res.redirect(`/stores/${store._id}/edit`);
+};
+
+exports.getStoreBySlug = async (req, res, next) => {
+    const store = await Store.findOne({
+        slug: req.params.slug
+    });
+
+    // Validate if there was a store
+    if (!store) return next();
+
+    res.render('store', {
+        store,
+        title: store.name
+    });
+};
+
+
+
+exports.getStoresByTag = async (req, res, next) => {
+    const tags = await Store.getTagsList();
+    const tag = req.params.tag;
+
+    res.render('tags', { tags, title: 'Tags', tag });
 };
