@@ -106,8 +106,6 @@ exports.getStoreBySlug = async (req, res, next) => {
     });
 };
 
-
-
 exports.getStoresByTag = async (req, res, next) => {
     const tag = req.params.tag;
     const tagQuery = tag || { $exists: true };
