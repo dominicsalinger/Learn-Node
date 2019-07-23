@@ -45,4 +45,10 @@ router.get(
     authController.logout
 );
 
+
+// User routes
+router.get('/account', authController.isLoggedIn, userController.account);
+router.post('/account', catchErrors(userController.updateAccount));
+
+
 module.exports = router;
