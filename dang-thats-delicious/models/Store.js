@@ -15,7 +15,7 @@ const storeSchema = new mongoose.Schema({
     },
     tags: [String],
     created: {
-        type: Date,
+        type: Date, 
         default: Date.now
     },
     location: {
@@ -32,7 +32,13 @@ const storeSchema = new mongoose.Schema({
             required: 'You must supply an address!'
         },
     },
-    photo: String
+    photo: String,
+    // Relational data
+    author: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: 'You must supply an author'
+    }
 });
 
 storeSchema.pre('save', async function(next) {
